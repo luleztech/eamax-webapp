@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EaMax Swahili</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --green: #16a34a;
+            --green-light: #22c55e;
+            --green-glow: rgba(34, 197, 94, 0.35);
+            --gold: #f59e0b;
+            --dark: #0a0f0a;
+            --surface: #111811;
+            --surface2: #182018;
+            --border: rgba(34,197,94,0.15);
+            --text: #e8f5e8;
+            --muted: #7a9a7a;
+            --white: #ffffff;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--dark);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─── NOISE OVERLAY ─── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* ─── BACKGROUND GLOW ORBS ─── */
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-orb-1 {
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(22,163,74,0.18) 0%, transparent 70%);
+            top: -200px; right: -200px;
+        }
+        .bg-orb-2 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(34,197,94,0.10) 0%, transparent 70%);
+            bottom: 100px; left: -150px;
+        }
+        .bg-orb-3 {
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* ─── WRAPPER ─── */
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: rgba(10,15,10,0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            letter-spacing: 2px;
+            color: var(--white);
+        }
+        .nav-logo span { color: var(--green-light); }
+        .nav-pill {
+            background: var(--green);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            border: 1px solid transparent;
+        }
+        .nav-pill:hover {
+            background: transparent;
+            border-color: var(--green-light);
+            color: var(--green-light);
+            box-shadow: 0 0 20px var(--green-glow);
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            padding: 80px 0 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        @media (max-width: 768px) {
+            .hero { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .hero-cta { justify-content: center; }
+            .hero-stats { justify-content: center; }
+            .hero-img-wrap { order: -1; }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.3);
+            color: var(--green-light);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            animation: fadeUp 0.6s ease both;
+        }
+        .badge-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--green-light);
+            box-shadow: 0 0 8px var(--green-light);
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.4); }
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(54px, 8vw, 88px);
+            line-height: 0.95;
+            letter-spacing: 2px;
+            color: var(--white);
+            margin-bottom: 20px;
+            animation: fadeUp 0.6s 0.1s ease both;
+        }
+        .hero-title .accent { color: var(--green-light); }
+        .hero-title .gold { color: var(--gold); }
+
+        .hero-sub {
+            font-size: 16px;
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 420px;
+            margin-bottom: 36px;
+            animation: fadeUp 0.6s 0.2s ease both;
+            font-weight: 400;
+        }
+
+        .hero-cta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            animation: fadeUp 0.6s 0.3s ease both;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--green);
+            color: #fff;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 700;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.07), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        .btn-primary:hover::after { transform: translateX(100%); }
+        .btn-primary:hover {
+            background: var(--green-light);
+            box-shadow: 0 0 40px var(--green-glow), 0 8px 20px rgba(0,0,0,0.4);
+            transform: translateY(-2px);
+        }
+        .btn-primary:active { transform: scale(0.97); }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .btn-secondary:hover { color: var(--text); }
+
+        .hero-stats {
+            display: flex;
+            gap: 28px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            animation: fadeUp 0.6s 0.4s ease both;
+        }
+        .stat-item { display: flex; flex-direction: column; gap: 4px; }
+        .stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            color: var(--white);
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+        .stat-label { font-size: 12px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-divider { width: 1px; background: var(--border); align-self: stretch; }
+
+        /* ─── HERO IMAGE ─── */
+        .hero-img-wrap {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            animation: fadeUp 0.6s 0.15s ease both;
+        }
+        .hero-img-glow {
+            position: absolute;
+            inset: -40px;
+            background: radial-gradient(ellipse at center, rgba(34,197,94,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .app-icon-big {
+            width: 200px;
+            height: 200px;
+            border-radius: 44px;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+            border: 2px solid rgba(34,197,94,0.2);
+            box-shadow:
+                0 0 0 8px rgba(34,197,94,0.06),
+                0 0 0 16px rgba(34,197,94,0.03),
+                0 30px 80px -20px rgba(0,0,0,0.8);
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        /* Floating badges around icon */
+        .float-badge {
+            position: absolute;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            backdrop-filter: blur(10px);
+            z-index: 2;
+            white-space: nowrap;
+        }
+        .float-badge-1 {
+            top: 10px; right: -20px;
+            animation: float 4s 0.5s ease-in-out infinite;
+        }
+        .float-badge-2 {
+            bottom: 20px; left: -20px;
+            animation: float 4s 1s ease-in-out infinite;
+        }
+        .float-badge-3 {
+            top: 50%; right: -40px; transform: translateY(-50%);
+            animation: float 4s 1.5s ease-in-out infinite;
+        }
+        @media (max-width: 768px) {
+            .float-badge-1 { right: 0; }
+            .float-badge-2 { left: 0; }
+            .float-badge-3 { display: none; }
+        }
+
+        /* ─── SECTION HEADING ─── */
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--green-light);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .section-tag::before {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 2px;
+            background: var(--green-light);
+            border-radius: 2px;
+        }
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(36px, 5vw, 54px);
+            color: var(--white);
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+        .section-sub {
+            font-size: 15px;
+            color: var(--muted);
+            max-width: 480px;
+            line-height: 1.7;
+        }
+
+        /* ─── DIVIDER ─── */
+        .divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--border), transparent);
+            margin: 80px 0;
+        }
+
+        /* ─── FEATURES GRID ─── */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 48px;
+        }
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(34,197,94,0.04) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .feature-card:hover {
+            border-color: rgba(34,197,94,0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), 0 0 0 1px rgba(34,197,94,0.1);
+        }
+        .feature-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            background: rgba(34,197,94,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--green-light);
+            margin-bottom: 18px;
+            border: 1px solid rgba(34,197,94,0.2);
+        }
+        .feature-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+        .feature-desc {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* ─── SCREENSHOTS ─── */
+        .screenshots-section { margin: 0; }
+        .screenshots-scroll {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 48px;
+        }
+        @media (max-width: 900px) {
+            .screenshots-scroll { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 500px) {
+            .screenshots-scroll { grid-template-columns: 1fr 1fr; }
+        }
+
+        .screenshot-card {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            aspect-ratio: 9/16;
+            position: relative;
+            background: var(--surface);
+        }
+        .screenshot-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            border-color: rgba(34,197,94,0.4);
+            box-shadow: 0 24px 50px -10px rgba(0,0,0,0.7), 0 0 20px rgba(34,197,94,0.1);
+        }
+        .screenshot-card img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .screenshot-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .screenshot-label {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* ─── RATING SECTION ─── */
+        .rating-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+        .rating-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(to right, var(--green), var(--gold), var(--green));
+        }
+        .rating-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            align-items: center;
+        }
+        @media (max-width: 700px) {
+            .rating-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+            .rating-section { padding: 32px 24px; }
+            .rating-stars { justify-content: center; }
+            .share-btn-wrap { display: flex; justify-content: center; }
+        }
+        .rating-big {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 72px;
+            color: var(--white);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .rating-stars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+            font-size: 20px;
+            color: var(--gold);
+        }
+        .rating-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+        .stat-big {
+            text-align: center;
+            border-left: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            padding: 0 40px;
+        }
+        @media (max-width: 700px) {
+            .stat-big { border: none; padding: 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 24px 0; }
+        }
+        .stat-big-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 56px;
+            color: var(--green-light);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .stat-big-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            border: 1px solid rgba(59,130,246,0.5);
+            color: #93c5fd;
+            padding: 14px 26px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .share-btn:hover {
+            background: rgba(59,130,246,0.1);
+            border-color: #93c5fd;
+            box-shadow: 0 0 20px rgba(59,130,246,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* ─── INFO BAR ─── */
+        .info-bar {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px 36px;
+        }
+        .info-bar-inner {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .info-icon {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-light);
+            font-size: 16px;
+        }
+        .info-text-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .info-text-val { font-size: 15px; color: var(--white); font-weight: 700; margin-top: 2px; }
+
+        /* ─── FOOTER ─── */
+        footer {
+            margin-top: 80px;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
+            letter-spacing: 3px;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+        .footer-logo span { color: var(--green-light); }
+        .footer-text { font-size: 13px; color: var(--muted); line-height: 1.7; }
+        .footer-link { color: var(--green-light); text-decoration: none; font-weight: 600; transition: opacity 0.2s; }
+        .footer-link:hover { opacity: 0.8; }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SCROLL REVEALS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+    </style>
+</head>
+<body>
+
+    <!-- BG -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-inner">
+            <div class="nav-logo">Ea<span>Max</span></div>
+            <a href="https://play.google.com/store/apps/details?id=com.eamax" target="_blank" rel="noopener" class="nav-pill">
+                <i class="fab fa-google-play"></i> Download
+            </a>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+
+        <!-- ─── HERO ─── -->
+        <section class="hero">
+            <div class="hero-left">
+                <div class="hero-badge">
+                    <div class="badge-dot"></div>
+                    Ipo Live na Bure kabisa
+                </div>
+                <h1 class="hero-title">
+                    EA<span class="accent">MAX</span><br>
+                    <span class="gold">SWAHILI</span>
+                </h1>
+                <p class="hero-sub">Furahia NBC Premier League, CAF Champions League, Tamthilia kali na Ligi mbalimbali duniani — popote ulipo, wakati wowote.</p>
+
+                <div class="hero-cta">
+                    <a href="https://play.google.com/store/apps/details?id=com.eamax" target="_blank" rel="noopener" class="btn-primary">
+                        <i class="fab fa-google-play" style="font-size:22px;"></i>
+                        Pakua Sasa — Bure
+                    </a>
+                    <a href="#features" class="btn-secondary">
+                        <i class="fas fa-chevron-down"></i> Soma Zaidi
+                    </a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-num">500K+</span>
+                        <span class="stat-label">Watumiaji</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-num">4.5★</span>
+                        <span class="stat-label">Rating</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-num">2020</span>
+                        <span class="stat-label">Ilianzishwa</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-img-wrap">
+                <div class="hero-img-glow"></div>
+                <img
+                    src="https://i.postimg.cc/65Hxb7km/Picsart-26-03-04-11-55-05-912.jpg"
+                    alt="EaMax Swahili Icon"
+                    class="app-icon-big"
+                    onerror="this.style.background='linear-gradient(135deg,#16a34a,#0a0f0a)';this.style.display='block';"
+                >
+                <!-- Floating Badges -->
+                <div class="float-badge float-badge-1">
+                    <i class="fas fa-futbol" style="color:#22c55e;"></i> Football
+                </div>
+                <div class="float-badge float-badge-2">
+                    <i class="fas fa-film" style="color:#f59e0b;"></i> Tamthilia
+                </div>
+                <div class="float-badge float-badge-3">
+                    <i class="fas fa-shield-alt" style="color:#60a5fa;"></i> Bila Malipo
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ─── FEATURES ─── -->
+        <section id="features">
+            <div class="reveal">
+                <span class="section-tag">Vipengele</span>
+                <h2 class="section-title">Kwanini EaMax ni chaguo Bora?</h2>
+                <p class="section-sub">Channel Bure, Bando kidogo sana na channel nyingi zaidi ya 50.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card reveal reveal-delay-1">
+                    <div class="feature-icon"><i class="fas fa-futbol"></i></div>
+                    <div class="feature-title">NBC Premier League</div>
+                    <div class="feature-desc">Tazama mechi zote za ligi ya Tanzania bara bila kikomo.</div>
+                </div>
+                <div class="feature-card reveal reveal-delay-2">
+                    <div class="feature-icon"><i class="fas fa-trophy"></i></div>
+                    <div class="feature-title">CAF Champions League</div>
+                    <div class="feature-desc">Klabu bora za Afrika zinakutana — fuatilia michuano yote bila chenga.</div>
+                </div>
+                <div class="feature-card reveal reveal-delay-3">
+                    <div class="feature-icon"><i class="fas fa-film"></i></div>
+                    <div class="feature-title">Tamthilia & Filamu</div>
+                    <div class="feature-desc">Tamthilia kali za ndani na nje ya nchi.</div>
+                </div>
+                <div class="feature-card reveal reveal-delay-4">
+                    <div class="feature-icon"><i class="fas fa-globe"></i></div>
+                    <div class="feature-title">Ligi Duniani</div>
+                    <div class="feature-desc">EPL, La Liga, Serie A, Bundesliga — matukio yote ya kimataifa yako hapa.</div>
+                </div>
+                <div class="feature-card reveal reveal-delay-1">
+                    <div class="feature-icon"><i class="fas fa-download"></i></div>
+                    <div class="feature-title">Pakua Bure</div>
+                    <div class="feature-desc">Anza kutumia bila kulipa. Rahisi kupakua kutoka Google Play Store.</div>
+                </div>
+                <div class="feature-card reveal reveal-delay-2">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="feature-title">Kiswahili</div>
+                    <div class="feature-desc">Imeundwa kwa lugha ya kiswahili na nirahisi kuitumia</div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ─── SCREENSHOTS ─── -->
+        <section class="screenshots-section">
+            <div class="reveal" style="text-align:center;">
+                <span class="section-tag">EaMax Swahili</span>
+                <h2 class="section-title">Yaliyomo Ndani</h2>
+                <p class="section-sub" style="margin: 0 auto;">Tunavipindi mbalimbali na bora zaidi, yafuatayo ni baadhi ya yale mengi tuliyo nayo.</p>
+            </div>
+
+            <div class="screenshots-scroll">
+                <div class="screenshot-card reveal reveal-delay-1">
+                    <img src="https://via.placeholder.com/450x800/0f1f0f/22c55e?text=⚽+Live+Match" alt="Live Match" onerror="this.parentElement.style.background='#182018'">
+                    <div class="screenshot-overlay"></div>
+                    <div class="screenshot-label">⚽ Mechi zote </div>
+                </div>
+                <div class="screenshot-card reveal reveal-delay-2">
+                    <img src="https://via.placeholder.com/450x800/0f1a24/60a5fa?text=🏆+CAF+Cup" alt="CAF Cup" onerror="this.parentElement.style.background='#182018'">
+                    <div class="screenshot-overlay"></div>
+                    <div class="screenshot-label">🏆 CAF Champions League</div>
+                </div>
+                <div class="screenshot-card reveal reveal-delay-3">
+                    <img src="https://via.placeholder.com/450x800/1a0f0f/f59e0b?text=🎬+Tamthilia" alt="Tamthilia" onerror="this.parentElement.style.background='#182018'">
+                    <div class="screenshot-overlay"></div>
+                    <div class="screenshot-label">🎬 Tamthilia kali</div>
+                </div>
+                <div class="screenshot-card reveal reveal-delay-4">
+                    <img src="https://via.placeholder.com/450x800/150f1a/a855f7?text=🌍+Ligi+Duniani" alt="Ligi Duniani" onerror="this.parentElement.style.background='#182018'">
+                    <div class="screenshot-overlay"></div>
+                    <div class="screenshot-label">🌍 Ligi za Kimataifa</div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ─── RATING ─── -->
+        <section class="reveal">
+            <div class="rating-section">
+                <div class="rating-grid">
+                    <!-- Stars -->
+                    <div>
+                        <div class="rating-big">4.5</div>
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <div class="rating-label">1,200+ maoni ya watumiaji</div>
+                    </div>
+
+                    <!-- Users -->
+                    <div class="stat-big">
+                        <div style="font-size:36px; margin-bottom:12px;">👥</div>
+                        <div class="stat-big-num">50K+</div>
+                        <div class="stat-big-label">Watumiaji wetu</div>
+                    </div>
+
+                    <!-- Share -->
+                    <div class="share-btn-wrap">
+                        <div>
+                            <p style="font-size:14px;color:var(--muted);margin-bottom:16px;font-weight:500;">Alika rafiki zako!</p>
+                            <button class="share-btn" id="shareBtn">
+                                <i class="fas fa-share-nodes"></i> Shiriki App Hii
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ─── BIG DOWNLOAD CTA ─── -->
+        <section class="reveal" style="text-align:center; padding: 40px 0;">
+            <span class="section-tag" style="justify-content:center;">Bado hauja install?</span>
+            <h2 class="section-title">Install Leo — Bure!</h2>
+            <p class="section-sub" style="margin: 0 auto 36px;">Jiunge na maelfu ya watazamaji wanaofurahia EaMax Swahili kila siku.</p>
+            <a href="https://play.google.com/store/apps/details?id=com.eamax" target="_blank" rel="noopener" class="btn-primary" style="display:inline-flex; font-size:19px; padding:18px 40px;">
+                <i class="fab fa-google-play" style="font-size:26px;"></i>
+                Install / Pakua Sasa
+                <i class="fas fa-arrow-right"></i>
+            </a>
+            <p style="margin-top:16px; font-size:13px; color:var(--muted);">Inapatikana kwenye Android · Bila malipo</p>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ─── INFO BAR ─── -->
+        <div class="info-bar reveal">
+            <div class="info-bar-inner">
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-code"></i></div>
+                    <div>
+                        <div class="info-text-label">Mtengenezaji</div>
+                        <div class="info-text-val">Ghettodevelopers</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-calendar"></i></div>
+                    <div>
+                        <div class="info-text-label">Mwaka wa Kuanzishwa</div>
+                        <div class="info-text-val">2020</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon"><i class="fab fa-android"></i></div>
+                    <div>
+                        <div class="info-text-label">Jukwaa</div>
+                        <div class="info-text-val">Android (Google Play)</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-tag"></i></div>
+                    <div>
+                        <div class="info-text-label">Bei</div>
+                        <div class="info-text-val">Bure Kabisa 🎉</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── FOOTER ─── -->
+        <footer>
+            <div class="footer-logo">Ea<span>Max</span></div>
+            <p class="footer-text">
+                © 2025 EaMax Swahili · Haki zote zimehifadhiwa<br>
+                Imetengenezwa kwa ❤️ na <strong style="color:var(--text);">Ghettodevelopers</strong> ·
+                <a href="https://play.google.com/store/apps/details?id=com.eamax" target="_blank" class="footer-link">Tembelea Google Play</a>
+            </p>
+        </footer>
+
+    </div><!-- /wrapper -->
+
+    <script>
+        // ─── Share Button ───
+        document.getElementById('shareBtn').addEventListener('click', async () => {
+            const data = {
+                title: 'EaMax Swahili',
+                text: 'Pakua EaMax Swahili! Furahia mechi za NBC Premier League, CAF, tamthilia na ligi duniani bila malipo.',
+                url: 'https://play.google.com/store/apps/details?id=com.eamax'
+            };
+            if (navigator.share) {
+                try { await navigator.share(data); } catch(e) {}
+            } else {
+                await navigator.clipboard.writeText(data.url).catch(() => {});
+                const btn = document.getElementById('shareBtn');
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Link Imenakiliwa!';
+                btn.style.color = '#22c55e';
+                btn.style.borderColor = '#22c55e';
+                setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 2500);
+            }
+        });
+
+        // ─── Scroll Reveal ───
+        const reveals = document.querySelectorAll('.reveal');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+        }, { threshold: 0.12 });
+        reveals.forEach(el => io.observe(el));
+    </script>
+</body>
+</html>
