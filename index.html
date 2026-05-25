@@ -1,1032 +1,1078 @@
 <!DOCTYPE html>
-<html lang="sw">
+<html lang="sw" class="bg-neutral-950 text-neutral-100 h-full">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EaMax Swahili</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+  
+  <title>Smart App Redirect Engine</title>
+  <meta name="description" content="Pakua programu bora kabisa za michezo na burudani kiganjani mwako. EaMax Swahili & SupaSoka." />
 
-        :root {
-            --green: #16a34a;
-            --green-light: #22c55e;
-            --green-glow: rgba(34, 197, 94, 0.35);
-            --gold: #f59e0b;
-            --dark: #0a0f0a;
-            --surface: #111811;
-            --surface2: #182018;
-            --border: rgba(34,197,94,0.15);
-            --text: #e8f5e8;
-            --muted: #7a9a7a;
-            --white: #ffffff;
-        }
+  <!-- Open Graph / Meta sharing capabilities -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Smart App Redirect Engine" />
+  <meta property="og:description" content="Pakua programu bora kabisa za michezo na burudani kiganjani mwako. EaMax Swahili & SupaSoka." />
+  <meta property="og:image" content="https://ds.aztv.videoready.tv/util/1772067544082-SIMBASCVSYANGASC-posterImage.png" />
+  <meta property="og:locale" content="sw_TZ" />
+  
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  
+  <!-- Performance Prefetch & Font optimization -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://play.google.com" />
 
-        html { scroll-behavior: smooth; }
+  <!-- Material Icons & Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <!-- FontAwesome for standard vector elements -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-        body {
-            background-color: var(--dark);
-            color: var(--text);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+  <!-- Tailwind CSS Engine CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Bebas Neue"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
         }
+      }
+    }
+  </script>
 
-        /* ─── NOISE OVERLAY ─── */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.4;
-        }
+  <style type="text/css">
+    /* High-Performance Smooth Scroll & Transitions */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Elegant custom glass scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(5, 5, 5, 0.4);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(34, 197, 94, 0.2);
+      border-radius: 99px;
+      border: 2px solid transparent;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(34, 197, 94, 0.45);
+    }
 
-        /* ─── BACKGROUND GLOW ORBS ─── */
-        .bg-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(120px);
-            pointer-events: none;
-            z-index: 0;
-        }
-        .bg-orb-1 {
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(22,163,74,0.18) 0%, transparent 70%);
-            top: -200px; right: -200px;
-        }
-        .bg-orb-2 {
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(34,197,94,0.10) 0%, transparent 70%);
-            bottom: 100px; left: -150px;
-        }
-        .bg-orb-3 {
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        /* ─── WRAPPER ─── */
-        .wrapper {
-            position: relative;
-            z-index: 1;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* ─── NAV ─── */
-        nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding: 16px 0;
-            background: rgba(10,15,10,0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-        }
-        .nav-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-        .nav-logo {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 28px;
-            letter-spacing: 2px;
-            color: var(--white);
-        }
-        .nav-logo span { color: var(--green-light); }
-        .nav-pill {
-            background: var(--green);
-            color: #fff;
-            padding: 10px 24px;
-            border-radius: 100px;
-            font-size: 14px;
-            font-weight: 700;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.25s ease;
-            border: 1px solid transparent;
-        }
-        .nav-pill:hover {
-            background: transparent;
-            border-color: var(--green-light);
-            color: var(--green-light);
-            box-shadow: 0 0 20px var(--green-glow);
-        }
-
-        /* ─── HERO ─── */
-        .hero {
-            padding: 80px 0 60px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-        @media (max-width: 768px) {
-            .hero { grid-template-columns: 1fr; text-align: center; gap: 40px; }
-            .hero-cta { justify-content: center; }
-            .hero-stats { justify-content: center; }
-            .hero-img-wrap { order: -1; }
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(34,197,94,0.1);
-            border: 1px solid rgba(34,197,94,0.3);
-            color: var(--green-light);
-            padding: 6px 14px;
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            animation: fadeUp 0.6s ease both;
-        }
-        .badge-dot {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--green-light);
-            box-shadow: 0 0 8px var(--green-light);
-            animation: pulse-dot 2s infinite;
-        }
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.4); }
-        }
-
-        .hero-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(54px, 8vw, 88px);
-            line-height: 0.95;
-            letter-spacing: 2px;
-            color: var(--white);
-            margin-bottom: 20px;
-            animation: fadeUp 0.6s 0.1s ease both;
-        }
-        .hero-title .accent { color: var(--green-light); }
-        .hero-title .gold { color: var(--gold); }
-
-        .hero-sub {
-            font-size: 16px;
-            color: var(--muted);
-            line-height: 1.7;
-            max-width: 420px;
-            margin-bottom: 36px;
-            animation: fadeUp 0.6s 0.2s ease both;
-            font-weight: 400;
-        }
-
-        .hero-cta {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-            animation: fadeUp 0.6s 0.3s ease both;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--green);
-            color: #fff;
-            padding: 16px 32px;
-            border-radius: 16px;
-            font-size: 17px;
-            font-weight: 700;
-            text-decoration: none;
-            border: 1px solid transparent;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.07), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.5s ease;
-        }
-        .btn-primary:hover::after { transform: translateX(100%); }
-        .btn-primary:hover {
-            background: var(--green-light);
-            box-shadow: 0 0 40px var(--green-glow), 0 8px 20px rgba(0,0,0,0.4);
-            transform: translateY(-2px);
-        }
-        .btn-primary:active { transform: scale(0.97); }
-
-        .btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--muted);
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .btn-secondary:hover { color: var(--text); }
-
-        .hero-stats {
-            display: flex;
-            gap: 28px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-            animation: fadeUp 0.6s 0.4s ease both;
-        }
-        .stat-item { display: flex; flex-direction: column; gap: 4px; }
-        .stat-num {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 32px;
-            color: var(--white);
-            letter-spacing: 1px;
-            line-height: 1;
-        }
-        .stat-label { font-size: 12px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
-        .stat-divider { width: 1px; background: var(--border); align-self: stretch; }
-
-        /* ─── HERO IMAGE ─── */
-        .hero-img-wrap {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            animation: fadeUp 0.6s 0.15s ease both;
-        }
-        .hero-img-glow {
-            position: absolute;
-            inset: -40px;
-            background: radial-gradient(ellipse at center, rgba(34,197,94,0.2) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-        .app-icon-big {
-            width: 200px;
-            height: 200px;
-            border-radius: 44px;
-            object-fit: cover;
-            position: relative;
-            z-index: 1;
-            border: 2px solid rgba(34,197,94,0.2);
-            box-shadow:
-                0 0 0 8px rgba(34,197,94,0.06),
-                0 0 0 16px rgba(34,197,94,0.03),
-                0 30px 80px -20px rgba(0,0,0,0.8);
-            animation: float 4s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-
-        /* Floating badges around icon */
-        .float-badge {
-            position: absolute;
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 10px 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text);
-            backdrop-filter: blur(10px);
-            z-index: 2;
-            white-space: nowrap;
-        }
-        .float-badge-1 {
-            top: 10px; right: -20px;
-            animation: float 4s 0.5s ease-in-out infinite;
-        }
-        .float-badge-2 {
-            bottom: 20px; left: -20px;
-            animation: float 4s 1s ease-in-out infinite;
-        }
-        .float-badge-3 {
-            top: 50%; right: -40px; transform: translateY(-50%);
-            animation: float 4s 1.5s ease-in-out infinite;
-        }
-        @media (max-width: 768px) {
-            .float-badge-1 { right: 0; }
-            .float-badge-2 { left: 0; }
-            .float-badge-3 { display: none; }
-        }
-
-        /* ─── SECTION HEADING ─── */
-        .section-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--green-light);
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-        .section-tag::before {
-            content: '';
-            display: inline-block;
-            width: 24px;
-            height: 2px;
-            background: var(--green-light);
-            border-radius: 2px;
-        }
-        .section-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(36px, 5vw, 54px);
-            color: var(--white);
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-        }
-        .section-sub {
-            font-size: 15px;
-            color: var(--muted);
-            max-width: 480px;
-            line-height: 1.7;
-        }
-
-        /* ─── DIVIDER ─── */
-        .divider {
-            border: none;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--border), transparent);
-            margin: 80px 0;
-        }
-
-        /* ─── FEATURES GRID ─── */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            margin-top: 48px;
-        }
-        .feature-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 28px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(34,197,94,0.04) 0%, transparent 60%);
-            pointer-events: none;
-        }
-        .feature-card:hover {
-            border-color: rgba(34,197,94,0.4);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), 0 0 0 1px rgba(34,197,94,0.1);
-        }
-        .feature-icon {
-            width: 48px; height: 48px;
-            border-radius: 14px;
-            background: rgba(34,197,94,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: var(--green-light);
-            margin-bottom: 18px;
-            border: 1px solid rgba(34,197,94,0.2);
-        }
-        .feature-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--white);
-            margin-bottom: 8px;
-        }
-        .feature-desc {
-            font-size: 14px;
-            color: var(--muted);
-            line-height: 1.6;
-        }
-
-        /* ─── SCREENSHOTS ─── */
-        .screenshots-section { margin: 0; }
-        .screenshots-scroll {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-top: 48px;
-        }
-        @media (max-width: 900px) {
-            .screenshots-scroll { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 500px) {
-            .screenshots-scroll { grid-template-columns: 1fr 1fr; }
-        }
-
-        .screenshot-card {
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-            aspect-ratio: 9/16;
-            position: relative;
-            background: var(--surface);
-        }
-        .screenshot-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            border-color: rgba(34,197,94,0.4);
-            box-shadow: 0 24px 50px -10px rgba(0,0,0,0.7), 0 0 20px rgba(34,197,94,0.1);
-        }
-        .screenshot-card img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        .screenshot-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        .screenshot-label {
-            position: absolute;
-            bottom: 12px;
-            left: 12px;
-            right: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.85);
-        }
-
-        /* ─── RATING SECTION ─── */
-        .rating-section {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            padding: 48px;
-            position: relative;
-            overflow: hidden;
-        }
-        .rating-section::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 3px;
-            background: linear-gradient(to right, var(--green), var(--gold), var(--green));
-        }
-        .rating-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            align-items: center;
-        }
-        @media (max-width: 700px) {
-            .rating-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
-            .rating-section { padding: 32px 24px; }
-            .rating-stars { justify-content: center; }
-            .share-btn-wrap { display: flex; justify-content: center; }
-        }
-        .rating-big {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 72px;
-            color: var(--white);
-            line-height: 1;
-            margin-bottom: 8px;
-        }
-        .rating-stars {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 8px;
-            font-size: 20px;
-            color: var(--gold);
-        }
-        .rating-label { font-size: 13px; color: var(--muted); font-weight: 500; }
-
-        .stat-big {
-            text-align: center;
-            border-left: 1px solid var(--border);
-            border-right: 1px solid var(--border);
-            padding: 0 40px;
-        }
-        @media (max-width: 700px) {
-            .stat-big { border: none; padding: 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 24px 0; }
-        }
-        .stat-big-num {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 56px;
-            color: var(--green-light);
-            line-height: 1;
-            margin-bottom: 8px;
-        }
-        .stat-big-label { font-size: 13px; color: var(--muted); font-weight: 500; }
-
-        .share-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: transparent;
-            border: 1px solid rgba(59,130,246,0.5);
-            color: #93c5fd;
-            padding: 14px 26px;
-            border-radius: 14px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .share-btn:hover {
-            background: rgba(59,130,246,0.1);
-            border-color: #93c5fd;
-            box-shadow: 0 0 20px rgba(59,130,246,0.2);
-            transform: translateY(-2px);
-        }
-
-        /* ─── INFO BAR ─── */
-        .info-bar {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 28px 36px;
-        }
-        .info-bar-inner {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 32px;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .info-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .info-icon {
-            width: 40px; height: 40px;
-            border-radius: 10px;
-            background: rgba(34,197,94,0.1);
-            border: 1px solid rgba(34,197,94,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--green-light);
-            font-size: 16px;
-        }
-        .info-text-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-        .info-text-val { font-size: 15px; color: var(--white); font-weight: 700; margin-top: 2px; }
-
-        /* ─── FOOTER ─── */
-        footer {
-            margin-top: 80px;
-            padding: 40px 0;
-            border-top: 1px solid var(--border);
-            text-align: center;
-        }
-        .footer-logo {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 36px;
-            letter-spacing: 3px;
-            color: var(--white);
-            margin-bottom: 12px;
-        }
-        .footer-logo span { color: var(--green-light); }
-        .footer-text { font-size: 13px; color: var(--muted); line-height: 1.7; }
-        .footer-link { color: var(--green-light); text-decoration: none; font-weight: 600; transition: opacity 0.2s; }
-        .footer-link:hover { opacity: 0.8; }
-
-        /* ─── ANIMATIONS ─── */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* SCROLL REVEALS */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
-        .reveal-delay-4 { transition-delay: 0.4s; }
-
-        /* ─── AUTO-REDIRECT OVERLAY ─── */
-        #redirect-overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--dark);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 32px;
-            animation: overlayFadeIn 0.3s ease both;
-        }
-        @keyframes overlayFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        #redirect-overlay .overlay-logo {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 48px;
-            letter-spacing: 4px;
-            color: var(--white);
-        }
-        #redirect-overlay .overlay-logo span { color: var(--green-light); }
-
-        .redirect-spinner-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-        .redirect-spinner {
-            width: 56px;
-            height: 56px;
-            border: 3px solid rgba(34,197,94,0.15);
-            border-top-color: var(--green-light);
-            border-radius: 50%;
-            animation: spin 0.9s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        .redirect-text {
-            font-size: 17px;
-            font-weight: 600;
-            color: var(--text);
-            letter-spacing: 0.5px;
-        }
-        .redirect-sub {
-            font-size: 13px;
-            color: var(--muted);
-            margin-top: 4px;
-            text-align: center;
-        }
-        .redirect-playstore-icon {
-            font-size: 40px;
-            color: var(--green-light);
-            opacity: 0.8;
-            animation: pulse-icon 1.5s ease-in-out infinite;
-        }
-        @keyframes pulse-icon {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.12); opacity: 1; }
-        }
-        .redirect-dots {
-            display: flex;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .redirect-dots span {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--green-light);
-            animation: dot-bounce 1.2s ease-in-out infinite;
-        }
-        .redirect-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .redirect-dots span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes dot-bounce {
-            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-            40% { transform: scale(1); opacity: 1; }
-        }
-    </style>
+    /* Pulse animation background orbs */
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+      mix-blend-mode: screen;
+      transform: translate3d(0, 0, 0);
+      will-change: transform, opacity;
+    }
+    
+    /* Float animation for app interfaces */
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
+    }
+    .float-item {
+      animation: floaty 4s ease-in-out infinite;
+    }
+    
+    /* Dynamic customized shadows & neon glows matching the Vibrant Palette theme */
+    .neon-glow-green {
+      box-shadow: 0 0 35px rgba(34, 197, 94, 0.45);
+    }
+    .neon-glow-orange {
+      box-shadow: 0 0 35px rgba(245, 158, 11, 0.35);
+    }
+    .glassmorphism {
+      background: rgba(17, 24, 17, 0.4);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+    
+    /* Micro loading animation dot transitions */
+    @keyframes dot-bounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+    .dot-pulse {
+      animation: dot-bounce 1.2s ease-in-out infinite;
+    }
+    
+    /* Fast reveal fade transition classes */
+    .fade-reveal {
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .fade-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
-<body>
+<body class="bg-neutral-950 text-neutral-100 antialiased h-full flex flex-col justify-between selection:bg-emerald-500/35 selection:text-emerald-100 overflow-x-hidden">
 
-    <!-- ─── AUTO-REDIRECT OVERLAY ─── -->
-    <div id="redirect-overlay">
-        <div class="overlay-logo">Ea<span>Max</span></div>
-        <div class="redirect-playstore-icon">
-            <i class="fab fa-google-play"></i>
+  <!-- ======================== 1. IOS CAMPAIGN NOTIFICATION BANNER ======================== -->
+  <div id="ios-checker" class="hidden bg-amber-500 text-neutral-950 font-sans font-extrabold text-center text-xs py-3.5 px-6 flex items-center justify-center gap-2 select-none z-50 shadow-lg relative shrink-0">
+    <i class="fas fa-exclamation-triangle text-sm"></i>
+    <span>Poleni watumiaji wa iPhone! App yetu inapatikana Android kwa sasa. Toleo la iOS litakuja hivi karibuni!</span>
+    <button onclick="dismissIosBanner()" class="ml-4 bg-neutral-950 text-amber-500 hover:text-white px-3 py-1 rounded text-[10px] font-mono transition-colors uppercase font-black uppercase pointer-events-auto">
+      Funga
+    </button>
+  </div>
+
+  <!-- MAIN WRAP CONTROLLER -->
+  <div class="flex-1 w-full flex flex-col relative min-h-screen">
+    
+    <!-- ======================== 2. INSTANT SMART REDIRECT OVERLAY ======================== -->
+    <div id="redirect-screen" class="hidden fixed inset-0 z-50 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-neutral-900 via-neutral-950 to-black select-none overflow-hidden">
+      <!-- Glow effect nodes -->
+      <div id="redirect-bg-glow" class="absolute inset-0 opacity-20 filter blur-3xl rounded-full transition-all duration-700 pointer-events-none"></div>
+      
+      <div class="absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.02)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col items-center max-w-sm w-full text-center">
+        <!-- Floating app core icon wrapper -->
+        <div class="relative w-32 h-32 mb-8">
+          <div id="redirect-pulse-glow" class="absolute inset-0 rounded-[38px] blur-xl opacity-60 animate-ping duration-[2.5s]"></div>
+          <div class="absolute -inset-1 rounded-[38px] bg-gradient-to-tr from-emerald-500 to-green-400 blur-sm opacity-50"></div>
+          
+          <div class="relative w-full h-full rounded-[38px] overflow-hidden border-2 border-neutral-800 bg-[#0c100c] p-1 shadow-2xl">
+            <img id="redirect-app-icon" src="" alt="App Logo" class="w-full h-full object-cover rounded-[32px]" referrerpolicy="no-referrer" />
+          </div>
+          <!-- Scanning sparkles badge -->
+          <div class="absolute -bottom-2 -right-2 flex items-center justify-center w-8 h-8 rounded-full bg-neutral-900 border border-neutral-800 shadow-xl">
+            <i class="fas fa-sparkles text-amber-400 animate-spin text-xs"></i>
+          </div>
         </div>
-        <div class="redirect-spinner-wrap">
-            <div class="redirect-spinner"></div>
-            <div>
-                <div class="redirect-text">Inaelekeza Playstore...</div>
-                <div class="redirect-sub">Subiri kidogo, tunakupeleka Google Play Store</div>
-                <div class="redirect-dots">
-                    <span></span><span></span><span></span>
-                </div>
-            </div>
+
+        <!-- Sport-Styled Dynamic Branding header -->
+        <h2 id="redirect-app-title" class="font-sans font-black tracking-tight text-white text-3xl italic uppercase mt-4 mb-2">
+          EAMAX SWAHILI
+        </h2>
+        <p class="text-[10px] text-emerald-500 font-mono tracking-widest uppercase mb-4">
+          Smart Redirect System v4.0
+        </p>
+
+        <!-- Dynamic Loader progress elements -->
+        <div class="w-full mt-4 mb-6">
+          <div class="flex font-mono text-[10px] font-bold justify-between text-neutral-400 mb-2 px-1 uppercase tracking-widest">
+            <span id="redirect-status-title">Inakuelekeza...</span>
+            <span id="redirect-status-percent">0%</span>
+          </div>
+
+          <!-- Glassmorphic active loader line -->
+          <div class="w-full h-2 bg-neutral-900/80 rounded-full overflow-hidden border border-white/10 p-[1px] relative">
+            <div id="redirect-progress-bar" class="h-full rounded-full transition-all duration-75" style="width: 0%; box-shadow: 0 0 10px rgb(34,197,94);"></div>
+          </div>
+          
+          <!-- System statistics row mimicking marketing funnel overlay -->
+          <div class="mt-4 flex gap-4 justify-center items-center select-none font-mono">
+            <span class="text-[10px] text-zinc-500">PING: <span class="text-emerald-400 font-semibold">14ms</span></span>
+            <span class="text-[10px] text-zinc-500">LOAD: <span class="text-emerald-400 font-semibold">0.8s</span></span>
+            <span id="ping-status" class="text-[10px] text-emerald-500 font-bold uppercase">Ready</span>
+          </div>
         </div>
+
+        <p id="redirect-status-desc" class="text-xs font-semibold text-neutral-300 px-4 min-h-[36px] transition-all">
+          Inatafuta Google Play Store kwenye simu...
+        </p>
+
+        <!-- Conversional Direct Action button -->
+        <button id="manual-redirect-btn" class="mt-8 w-full flex items-center justify-center gap-2.5 py-4 px-6 rounded-2xl font-bold text-base text-white transition-all transform active:scale-95 duration-200">
+          <i class="fab fa-google-play animate-bounce"></i>
+          Fungua Play Store Sasa
+        </button>
+
+        <!-- Safetynet fallback advice -->
+        <div class="mt-8 flex items-center justify-center gap-2 text-xs text-neutral-500">
+          <i class="fas fa-info-circle text-emerald-500"></i>
+          <span>Ikiwa haifunguki kiotomatiki, bofya kitufe cha juu</span>
+        </div>
+      </div>
     </div>
 
-    <!-- BG -->
-    <div class="bg-orb bg-orb-1"></div>
-    <div class="bg-orb bg-orb-2"></div>
-    <div class="bg-orb bg-orb-3"></div>
 
-    <!-- NAV -->
-    <nav>
-        <div class="nav-inner">
-            <div class="nav-logo">Ea<span>Max</span></div>
-            <a href="https://play.google.com/store/apps/details?id=com.eamax" target="_blank" rel="noopener" class="nav-pill">
-                <i class="fab fa-google-play"></i> Download
-            </a>
-        </div>
-    </nav>
+    <!-- ======================== 3. THE GRAND APP SELECTION PAGE ======================== -->
+    <div id="selection-screen" class="hidden relative px-6 py-16 md:py-24 max-w-5xl mx-auto text-center flex-1 flex flex-col items-center justify-center z-10">
+      <!-- Glow ambient background -->
+      <div class="absolute w-[500px] h-[500px] rounded-full bg-emerald-500/10 filter blur-[100px] opacity-70 pointer-events-none -translate-y-12 z-0"></div>
 
-    <div class="wrapper">
+      <div class="relative z-10 max-w-xl mb-14">
+        <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-emerald-950/20 border border-emerald-500/20 rounded-full text-[11px] font-mono font-bold text-emerald-400 uppercase tracking-widest leading-none">
+          <i class="fas fa-sparkles text-amber-400 animate-pulse text-xs"></i> Smart App Hub • 2026 Edition
+        </span>
+        
+        <h1 class="font-sans font-black text-4xl sm:text-5xl md:text-6xl text-white tracking-tighter mt-5 mb-4 leading-[1.05] uppercase italic">
+          Vipindi na Michezo<br/>
+          <span class="bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">Viganjani Mwako</span>
+        </h1>
+        
+        <p class="text-sm sm:text-base text-neutral-400 leading-relaxed max-w-md mx-auto">
+          Chagua programu yako hapa chini ili kuanza kutazama mechi live, kusoma uchambuzi sahihi na kufuatilia matokeo yote bure kabisa.
+        </p>
+      </div>
 
-        <!-- ─── HERO ─── -->
-        <section class="hero">
-            <div class="hero-left">
-                <div class="hero-badge">
-                    <div class="badge-dot"></div>
-                    Ipo Live na Bure kabisa
-                </div>
-                <h1 class="hero-title">
-                    EA<span class="accent">MAX</span><br>
-                    <span class="gold">SWAHILI</span>
-                </h1>
-                <p class="hero-sub">Furahia NBC Premier League, CAF Champions League, Tamthilia kali na Ligi mbalimbali duniani — popote ulipo, wakati wowote.</p>
-
-                <div class="hero-cta">
-                    <a href="https://play.google.com/store/apps/details?id=com.eamax" target="_blank" rel="noopener" class="btn-primary">
-                        <i class="fab fa-google-play" style="font-size:22px;"></i>
-                        Pakua Sasa — Bure
-                    </a>
-                    <a href="#features" class="btn-secondary">
-                        <i class="fas fa-chevron-down"></i> Soma Zaidi
-                    </a>
-                </div>
-
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <span class="stat-num">500K+</span>
-                        <span class="stat-label">Watumiaji</span>
-                    </div>
-                    <div class="stat-divider"></div>
-                    <div class="stat-item">
-                        <span class="stat-num">4.5★</span>
-                        <span class="stat-label">Rating</span>
-                    </div>
-                    <div class="stat-divider"></div>
-                    <div class="stat-item">
-                        <span class="stat-num">2020</span>
-                        <span class="stat-label">Ilianzishwa</span>
-                    </div>
-                </div>
+      <!-- App grid -->
+      <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-3xl justify-items-center">
+        
+        <!-- CARD 1: EaMax Swahili -->
+        <div onclick="selectApp('eamax')" class="group cursor-pointer relative flex flex-col items-center justify-between p-8 rounded-[32px] bg-neutral-900/40 hover:bg-neutral-900/60 border border-neutral-850 hover:border-emerald-500/30 backdrop-blur-xl transition-all duration-300 w-full max-w-sm">
+          <div class="absolute inset-0 rounded-[32px] pointer-events-none opacity-0 group-hover:opacity-10 w-full h-full blur-xl transition-opacity duration-300 bg-radial-gradient" style="background: radial-gradient(circle, #22c55e 0%, transparent 60%);"></div>
+          
+          <div class="flex flex-col items-center text-center w-full z-10">
+            <div class="relative w-24 h-24 mb-6">
+              <div class="absolute -inset-0.5 rounded-[28px] blur-sm opacity-0 group-hover:opacity-45 transition-all duration-300 bg-emerald-500"></div>
+              <div class="relative w-full h-full rounded-[28px] overflow-hidden bg-[#0c100c] border border-neutral-700/60 p-1 shadow-lg transition-transform duration-300 group-hover:scale-105">
+                <img src="https://i.postimg.cc/65Hxb7km/Picsart-26-03-04-11-55-05-912.jpg" alt="EaMax Logo" class="w-full h-full object-cover rounded-[22px]" referrerpolicy="no-referrer" />
+              </div>
             </div>
 
-            <div class="hero-img-wrap">
-                <div class="hero-img-glow"></div>
-                <img
-                    src="https://i.postimg.cc/65Hxb7km/Picsart-26-03-04-11-55-05-912.jpg"
-                    alt="EaMax Swahili Icon"
-                    class="app-icon-big"
-                    onerror="this.style.background='linear-gradient(135deg,#16a34a,#0a0f0a)';this.style.display='block';"
-                >
-                <!-- Floating Badges -->
-                <div class="float-badge float-badge-1">
-                    <i class="fas fa-futbol" style="color:#22c55e;"></i> Football
-                </div>
-                <div class="float-badge float-badge-2">
-                    <i class="fas fa-film" style="color:#f59e0b;"></i> Tamthilia
-                </div>
-                <div class="float-badge float-badge-3">
-                    <i class="fas fa-shield-alt" style="color:#60a5fa;"></i> Bila Malipo
-                </div>
-            </div>
-        </section>
+            <h3 class="font-sans font-black tracking-tighter uppercase italic leading-none mb-2.5 text-2xl text-neutral-100 group-hover:text-emerald-400 transition-colors duration-200">
+              EaMax Swahili
+            </h3>
 
-        <hr class="divider">
-
-        <!-- ─── FEATURES ─── -->
-        <section id="features">
-            <div class="reveal">
-                <span class="section-tag">Vipengele</span>
-                <h2 class="section-title">Kwanini EaMax ni chaguo Bora?</h2>
-                <p class="section-sub">Channel Bure, Bando kidogo sana na channel nyingi zaidi ya 50.</p>
+            <div class="flex items-center gap-1.5 bg-neutral-950/85 px-3 py-1 border border-neutral-800 rounded-full text-xs font-semibold text-neutral-400 mb-4 font-mono">
+              <i class="fas fa-star text-amber-400 text-[10px]"></i>
+              <span class="text-neutral-100 font-bold">4.5</span>
+              <span class="text-neutral-500">·</span>
+              <span>500K+ Wapakuzi</span>
             </div>
 
-            <div class="features-grid">
-                <div class="feature-card reveal reveal-delay-1">
-                    <div class="feature-icon"><i class="fas fa-futbol"></i></div>
-                    <div class="feature-title">NBC Premier League</div>
-                    <div class="feature-desc">Tazama mechi zote za ligi ya Tanzania bara bila kikomo.</div>
-                </div>
-                <div class="feature-card reveal reveal-delay-2">
-                    <div class="feature-icon"><i class="fas fa-trophy"></i></div>
-                    <div class="feature-title">CAF Champions League</div>
-                    <div class="feature-desc">Klabu bora za Afrika zinakutana — fuatilia michuano yote bila chenga.</div>
-                </div>
-                <div class="feature-card reveal reveal-delay-3">
-                    <div class="feature-icon"><i class="fas fa-film"></i></div>
-                    <div class="feature-title">Tamthilia & Filamu</div>
-                    <div class="feature-desc">Tamthilia kali za ndani na nje ya nchi.</div>
-                </div>
-                <div class="feature-card reveal reveal-delay-4">
-                    <div class="feature-icon"><i class="fas fa-globe"></i></div>
-                    <div class="feature-title">Ligi Duniani</div>
-                    <div class="feature-desc">EPL, La Liga, Serie A, Bundesliga — matukio yote ya kimataifa yako hapa.</div>
-                </div>
-                <div class="feature-card reveal reveal-delay-1">
-                    <div class="feature-icon"><i class="fas fa-download"></i></div>
-                    <div class="feature-title">Pakua Bure</div>
-                    <div class="feature-desc">Anza kutumia bila kulipa. Rahisi kupakua kutoka Google Play Store.</div>
-                </div>
-                <div class="feature-card reveal reveal-delay-2">
-                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
-                    <div class="feature-title">Kiswahili</div>
-                    <div class="feature-desc">Imeundwa kwa lugha ya kiswahili na nirahisi kuitumia</div>
-                </div>
-            </div>
-        </section>
-
-        <hr class="divider">
-
-        <!-- ─── SCREENSHOTS ─── -->
-        <section class="screenshots-section">
-            <div class="reveal" style="text-align:center;">
-                <span class="section-tag">EaMax Swahili</span>
-                <h2 class="section-title">Yaliyomo Ndani</h2>
-                <p class="section-sub" style="margin: 0 auto;">Tunavipindi mbalimbali na bora zaidi, yafuatayo ni baadhi ya yale mengi tuliyo nayo.</p>
-            </div>
-
-            <div class="screenshots-scroll">
-                <div class="screenshot-card reveal reveal-delay-1">
-                    <img src="https://ds.aztv.videoready.tv/util/1772067544082-SIMBASCVSYANGASC-posterImage.png" alt="Live Match" onerror="this.parentElement.style.background='#182018'">
-                    <div class="screenshot-overlay"></div>
-                    <div class="screenshot-label">⚽ NBC premier league </div>
-                </div>
-                <div class="screenshot-card reveal reveal-delay-2">
-                    <img src="https://i.postimg.cc/rmSn6dqb/20250227-011554.png" alt="CAF Cup" onerror="this.parentElement.style.background='#182018'">
-                    <div class="screenshot-overlay"></div>
-                    <div class="screenshot-label">🏆 Mechi za ulaya</div>
-                </div>
-                <div class="screenshot-card reveal reveal-delay-3">
-                    <img src="https://i.postimg.cc/15HSXSNg/1757523390386-THUMBNAIL-OTTOMANAZAMTWO.webp" onerror="this.parentElement.style.background='#182018'">
-                    <div class="screenshot-overlay"></div>
-                    <div class="screenshot-label">🎬 Tamthilia kali</div>
-                </div>
-                <div class="screenshot-card reveal reveal-delay-4">
-                    <img src="https://i.postimg.cc/3NJR4dFQ/Screenshot-20260206-194819-Instagram.jpg" alt="Ligi Duniani" onerror="this.parentElement.style.background='#182018'">
-                    <div class="screenshot-overlay"></div>
-                    <div class="screenshot-label">🌍 Movies</div>
-                </div>
-            </div>
-        </section>
-
-        <hr class="divider">
-
-        <!-- ─── RATING ─── -->
-        <section class="reveal">
-            <div class="rating-section">
-                <div class="rating-grid">
-                    <!-- Stars -->
-                    <div>
-                        <div class="rating-big">4.5</div>
-                        <div class="rating-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                        <div class="rating-label">1,200+ maoni ya watumiaji</div>
-                    </div>
-
-                    <!-- Users -->
-                    <div class="stat-big">
-                        <div style="font-size:36px; margin-bottom:12px;">👥</div>
-                        <div class="stat-big-num">500K+</div>
-                        <div class="stat-big-label">Watumiaji wetu</div>
-                    </div>
-
-                    <!-- Share -->
-                    <div class="share-btn-wrap">
-                        <div>
-                            <p style="font-size:14px;color:var(--muted);margin-bottom:16px;font-weight:500;">Alika rafiki zako!</p>
-                            <button class="share-btn" id="shareBtn">
-                                <i class="fas fa-share-nodes"></i> Shiriki App Hii
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <hr class="divider">
-
-        <!-- ─── BIG DOWNLOAD CTA ─── -->
-        <section class="reveal" style="text-align:center; padding: 40px 0;">
-            <span class="section-tag" style="justify-content:center;">Bado hauja install?</span>
-            <h2 class="section-title">Install Leo — Bure!</h2>
-            <p class="section-sub" style="margin: 0 auto 36px;">Jiunge na maelfu ya watazamaji wanaofurahia EaMax Swahili kila siku.</p>
-            <a href="https://play.google.com/store/apps/details?id=com.eamax" target="_blank" rel="noopener" class="btn-primary" style="display:inline-flex; font-size:19px; padding:18px 40px;">
-                <i class="fab fa-google-play" style="font-size:26px;"></i>
-                Install / Pakua Sasa
-                <i class="fas fa-arrow-right"></i>
-            </a>
-            <p style="margin-top:16px; font-size:13px; color:var(--muted);">Inapatikana kwenye Android · Bila malipo</p>
-        </section>
-
-        <hr class="divider">
-
-        <!-- ─── INFO BAR ─── -->
-        <div class="info-bar reveal">
-            <div class="info-bar-inner">
-                <div class="info-item">
-                    <div class="info-icon"><i class="fas fa-code"></i></div>
-                    <div>
-                        <div class="info-text-label">Mtengenezaji</div>
-                        <div class="info-text-val">Ghettodevelopers</div>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-icon"><i class="fas fa-calendar"></i></div>
-                    <div>
-                        <div class="info-text-label">Mwaka wa Kuanzishwa</div>
-                        <div class="info-text-val">2020</div>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-icon"><i class="fab fa-android"></i></div>
-                    <div>
-                        <div class="info-text-label">Jukwaa</div>
-                        <div class="info-text-val">Android (Google Play)</div>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-icon"><i class="fas fa-tag"></i></div>
-                    <div>
-                        <div class="info-text-label">Bei</div>
-                        <div class="info-text-val">Bure Kabisa 🎉</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ─── FOOTER ─── -->
-        <footer>
-            <div class="footer-logo">Ea<span>Max</span></div>
-            <p class="footer-text">
-                © 2025 EaMax Swahili · Haki zote zimehifadhiwa<br>
-                Imetengenezwa na <strong style="color:var(--text);">Ghettodevelopers</strong> ·
-                <a href="https://play.google.com/store/apps/details?id=com.eamax" target="_blank" class="footer-link">Tembelea Google Play</a>
+            <p class="text-sm font-medium leading-relaxed text-neutral-400 max-w-[260px] mb-8">
+              Mechi zote za ligi ya NBC, CAF Champions League, Ligi Kuu za nje pamoja na Tamthilia live bure!
             </p>
-        </footer>
+          </div>
 
-    </div><!-- /wrapper -->
+          <div class="w-full z-10">
+            <button class="w-full flex items-center justify-center gap-2 py-3 px-5 rounded-2xl font-bold text-sm border transiton-all bg-gradient-to-r from-emerald-600 to-green-500 border-transparent text-white duration-200 shadow-md">
+              Soma & Pakua
+              <i class="fas fa-arrow-right text-xs"></i>
+            </button>
+          </div>
+        </div>
 
-    <script>
-        // ─── Auto-Redirect to Play Store on Page Load ───
-        (function() {
-            const PLAYSTORE_URL = 'https://play.google.com/store/apps/details?id=com.eamax';
-            // Redirect after a short delay so user sees the loading screen
-            setTimeout(function() {
-                window.location.href = PLAYSTORE_URL;
-            }, 1800);
-        })();
+        <!-- CARD 2: SupaSoka -->
+        <div onclick="selectApp('supasoka')" class="group cursor-pointer relative flex flex-col items-center justify-between p-8 rounded-[32px] bg-neutral-900/40 hover:bg-neutral-900/60 border border-neutral-850 hover:border-emerald-500/30 backdrop-blur-xl transition-all duration-300 w-full max-w-sm">
+          <div class="absolute inset-0 rounded-[32px] pointer-events-none opacity-0 group-hover:opacity-10 w-full h-full blur-xl transition-opacity duration-300 bg-radial-gradient" style="background: radial-gradient(circle, #00ff88 0%, transparent 60%);"></div>
+          
+          <div class="flex flex-col items-center text-center w-full z-10">
+            <div class="relative w-24 h-24 mb-6">
+              <div class="absolute -inset-0.5 rounded-[28px] blur-sm opacity-0 group-hover:opacity-45 transition-all duration-300 bg-emerald-400"></div>
+              <div class="relative w-full h-full rounded-[28px] overflow-hidden bg-[#0c100c] border border-neutral-700/60 p-1 shadow-lg transition-transform duration-300 group-hover:scale-105">
+                <img src="https://i.postimg.cc/rmSn6dqb/20250227-011554.png" alt="SupaSoka Logo" class="w-full h-full object-cover rounded-[22px]" referrerpolicy="no-referrer" />
+              </div>
+            </div>
 
-        // ─── Share Button ───
-        document.getElementById('shareBtn').addEventListener('click', async () => {
-            const data = {
-                title: 'EaMax Swahili',
-                text: 'Pakua EaMax Swahili! Furahia mechi za NBC Premier League, CAF, tamthilia na ligi duniani bila malipo.',
-                url: 'https://play.google.com/store/apps/details?id=com.eamax'
-            };
-            if (navigator.share) {
-                try { await navigator.share(data); } catch(e) {}
-            } else {
-                await navigator.clipboard.writeText(data.url).catch(() => {});
-                const btn = document.getElementById('shareBtn');
-                const orig = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Link Imenakiliwa!';
-                btn.style.color = '#22c55e';
-                btn.style.borderColor = '#22c55e';
-                setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 2500);
-            }
-        });
+            <h3 class="font-sans font-black tracking-tighter uppercase italic leading-none mb-2.5 text-2xl text-neutral-100 group-hover:text-emerald-400 transition-colors duration-200">
+              SupaSoka
+            </h3>
 
-        // ─── Scroll Reveal ───
-        const reveals = document.querySelectorAll('.reveal');
-        const io = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-        }, { threshold: 0.12 });
-        reveals.forEach(el => io.observe(el));
-    </script>
+            <div class="flex items-center gap-1.5 bg-neutral-950/85 px-3 py-1 border border-neutral-800 rounded-full text-xs font-semibold text-neutral-400 mb-4 font-mono">
+              <i class="fas fa-star text-amber-400 text-[10px]"></i>
+              <span class="text-neutral-100 font-bold">4.7</span>
+              <span class="text-neutral-500">·</span>
+              <span>200K+ Wapakuzi</span>
+            </div>
+
+            <p class="text-sm font-medium leading-relaxed text-neutral-400 max-w-[260px] mb-8">
+              Live Scores moto, Matokeo ya soka hivi sasa, video za magoli, na ratiba pamoja na msimamo kwa weledi wa haraka!
+            </p>
+          </div>
+
+          <div class="w-full z-10">
+            <button class="w-full flex items-center justify-center gap-2 py-3 px-5 rounded-2xl font-bold text-sm border border-emerald-400 text-emerald-400 group-hover:bg-emerald-400 group-hover:text-neutral-950 transition-all duration-200 shadow-sm">
+              Soma & Pakua
+              <i class="fas fa-arrow-right text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Trust highlights -->
+      <div class="relative z-10 mt-16 md:mt-20 flex flex-wrap justify-center gap-8 text-[11px] text-neutral-500 font-mono select-none">
+        <div class="flex items-center gap-2"><i class="fas fa-mobile-alt text-emerald-500"></i> Usakinishaji wa Haraka</div>
+        <div class="flex items-center gap-2"><i class="fas fa-shield-halved text-emerald-500"></i> Imethibitishwa kuwa Salama</div>
+        <div class="flex items-center gap-2"><i class="fab fa-google-play text-emerald-500"></i> Downloads Kupitia Play Store</div>
+      </div>
+    </div>
+
+
+    <!-- ======================== 4. GENERAL HIGH-CONVERSION LANDING PAGE ======================== -->
+    <div id="landing-screen" class="hidden min-h-screen bg-neutral-950 text-neutral-100 relative overflow-x-hidden font-sans pb-16">
+      <!-- Ambient Glow Orbs -->
+      <div id="landing-orb-1" class="fixed w-[600px] h-[600px] rounded-full filter blur-[100px] opacity-15 pointer-events-none -top-40 -right-45 transition-all duration-700 select-none"></div>
+      <div id="landing-orb-2" class="fixed w-[400px] h-[400px] rounded-full filter blur-[120px] opacity-10 pointer-events-none bottom-10 -left-20 transition-all duration-700 select-none"></div>
+
+      <!-- Navigation Header -->
+      <nav class="sticky top-0 z-40 bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-900 px-6 py-4">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <button onclick="goBackToSelect()" class="flex items-center justify-center p-2 rounded-xl border border-neutral-800 bg-neutral-900/45 hover:bg-neutral-900 hover:border-neutral-700 text-neutral-400 hover:text-neutral-100 transition-all text-xs font-semibold cursor-pointer">
+              <i class="fas fa-arrow-left mr-1.5 text-[10px]"></i> Chagua App
+            </button>
+            <div id="nav-brand-title" class="font-sans font-black text-2xl tracking-tight text-white select-none italic uppercase">
+              Brand<span>Name</span>
+            </div>
+          </div>
+
+          <button onclick="triggerAppRedirect()" class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs uppercase cursor-pointer text-white transition-all transform hover:scale-[1.02]" style="background: linear-gradient(135deg, rgb(22,163,74), rgb(34,197,94));">
+            <i class="fas fa-download"></i> Pakua APK
+          </button>
+        </div>
+      </nav>
+
+      <!-- Main Showcase Container Grid -->
+      <main class="max-w-6xl mx-auto px-6 pt-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+          
+          <!-- Column Left: Textual Content copy explaining app benefits -->
+          <div class="lg:col-span-7 flex flex-col items-start text-left">
+            <div id="landing-badge" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-950/25 border border-emerald-500/20 text-emerald-400 font-bold text-xs mb-6 select-none">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span id="landing-badge-text">Ipo Live na Bure</span>
+            </div>
+
+            <h1 id="landing-hero-html" class="font-sans font-black text-5xl md:text-6xl lg:text-7xl leading-none tracking-tighter text-white mb-5 uppercase italic select-none">
+              EA<span class="text-emerald-500">MAX</span><br><span class="text-[#f59e0b]">SWAHILI</span>
+            </h1>
+
+            <p id="landing-description-text" class="text-base text-neutral-400 leading-relaxed max-w-lg mb-8">
+              Furahia NBC Premier League, CAF Champions League, Tamthilia kali na michezo yote...
+            </p>
+
+            <!-- Conversion Install Engine -->
+            <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-stretch select-none">
+              <button onclick="triggerAppRedirect()" id="primary-action-btn" class="flex items-center justify-center gap-3 px-8 py-4.5 rounded-2xl font-bold text-base text-white transition-all transform active:scale-[0.99] cursor-pointer shadow-lg">
+                <i class="fab fa-google-play animate-pulse"></i>
+                Pakua kutoka Google Play Store
+              </button>
+              
+              <button onclick="scrollToSegment('features-grid-anchor')" class="flex items-center justify-center gap-2 px-6 py-4.5 rounded-2xl font-bold text-sm bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 transition-all cursor-pointer">
+                Soma Vipengele <i class="fas fa-arrow-down text-xs ml-1"></i>
+              </button>
+            </div>
+
+            <!-- Authentic statistics parameters showing startup trust -->
+            <div class="grid grid-cols-3 gap-6 border-t border-neutral-900 pt-8 mt-10 w-full select-none">
+              <div>
+                <p id="stat-download-tag" class="font-mono font-bold text-4xl text-neutral-100 tracking-tight leading-none">500K+</p>
+                <p class="text-[11px] font-semibold font-mono text-neutral-500 uppercase tracking-widest mt-1.5">Wapakuzi</p>
+              </div>
+              <div class="border-l border-neutral-900 pl-6">
+                <p class="font-mono font-bold text-4xl text-neutral-100 tracking-tight leading-none flex items-center">
+                  <span id="stat-rating-val">4.5</span>
+                  <i class="fas fa-star text-amber-400 ml-1.5 text-xl pb-1"></i>
+                </p>
+                <p class="text-[11px] font-semibold font-mono text-neutral-500 uppercase tracking-widest mt-1.5">Mapilio ya Nyota</p>
+              </div>
+              <div class="border-l border-neutral-900 pl-6">
+                <p id="stat-year-val" class="font-mono font-bold text-4xl text-neutral-100 tracking-tight leading-none">2020</p>
+                <p class="text-[11px] font-semibold font-mono text-neutral-500 uppercase tracking-widest mt-1.5">Ulioanzishwa</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column Right: Scan QR Core interface component -->
+          <div class="lg:col-span-5 flex flex-col items-center justify-center mt-6 lg:mt-0 select-none">
+            
+            <!-- Desktop Layout: QR interactive generator visualization -->
+            <div id="desktop-qr-portal" class="hidden lg:flex flex-col items-center relative p-6 rounded-3xl bg-neutral-900/60 border border-neutral-800 backdrop-blur-xl group">
+              <!-- Animated brackets -->
+              <div id="corner-bracket-tl" class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 rounded-tl-xl transition-all duration-300 group-hover:scale-110"></div>
+              <div id="corner-bracket-tr" class="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 rounded-tr-xl transition-all duration-300 group-hover:scale-110"></div>
+              <div id="corner-bracket-bl" class="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 rounded-bl-xl transition-all duration-300 group-hover:scale-110"></div>
+              <div id="corner-bracket-br" class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 rounded-br-xl transition-all duration-300 group-hover:scale-110"></div>
+
+              <!-- Scanning laser block -->
+              <div id="scanner-line-light" class="absolute left-4 right-4 h-[2px] z-10 opacity-70 blur-[1px]"></div>
+
+              <div class="relative w-48 h-48 bg-[#0D120D] p-3 rounded-2xl border border-neutral-800/85 flex flex-col justify-between">
+                <!-- Static high quality SVG QR Simulator -->
+                <svg viewBox="0 0 21 21" id="qr-svg" class="w-full h-full select-none" shapeRendering="crispEdges">
+                  <!-- Anchor TL -->
+                  <rect x="0" y="0" width="7" height="7" rx="1" fill="#22c55e" />
+                  <rect x="1" y="1" width="5" height="5" rx="0.5" fill="#0D120D" />
+                  <rect x="2" y="2" width="3" height="3" rx="0.2" fill="#22c55e" />
+
+                  <!-- Anchor TR -->
+                  <rect x="14" y="0" width="7" height="7" rx="1" fill="#22c55e" />
+                  <rect x="15" y="1" width="5" height="5" rx="0.5" fill="#0D120D" />
+                  <rect x="16" y="2" width="3" height="3" rx="0.2" fill="#22c55e" />
+
+                  <!-- Anchor BL -->
+                  <rect x="0" y="14" width="7" height="7" rx="1" fill="#22c55e" />
+                  <rect x="1" y="15" width="5" height="5" rx="0.5" fill="#0D120D" />
+                  <rect x="2" y="16" width="3" height="3" rx="0.2" fill="#22c55e" />
+
+                  <!-- Dynamic matrix rows filled with sport neon points -->
+                  <rect x="9" y="1" width="2" height="1" fill="#22c55e" /><rect x="12" y="3" width="1" height="2" fill="#22c55e" /><rect x="8" y="5" width="2" height="1" fill="#22c55e" />
+                  <rect x="9" y="9" width="3" height="3" rx="0.2" fill="#22c55e" /><rect x="1" y="10" width="1" height="3" fill="#22c55e" /><rect x="15" y="8" width="2" height="2" fill="#22c55e" />
+                  <rect x="18" y="12" width="2" height="3" fill="#22c55e" /><rect x="8" y="15" width="3" height="1" fill="#22c55e" /><rect x="15" y="15" width="4" height="2" fill="#22c55e" />
+                  <rect x="12" y="18" width="2" height="2" fill="#22c55e" /><rect x="10" y="12" width="1" height="4" fill="#22c55e" />
+                </svg>
+
+                <!-- Center Logo Overlaid badge -->
+                <div class="absolute inset-0 m-auto w-11 h-11 bg-[#0A0F0A] rounded-xl flex items-center justify-center border-2 border-emerald-500 shadow-xl p-[2px]">
+                  <img id="qr-logo-badge" src="" alt="Badge" class="w-full h-full object-cover rounded-lg" referrerpolicy="no-referrer" />
+                </div>
+              </div>
+
+              <p class="mt-4 text-[10px] font-bold text-neutral-400 font-mono tracking-wide text-center uppercase">
+                Changanua ili Kusakinisha Android
+              </p>
+            </div>
+
+            <!-- Mobile Layout: Large beautiful preview shield -->
+            <div id="mobile-shield-portal" class="lg:hidden relative w-48 h-48">
+              <div id="mobile-icon-glow" class="absolute inset-0 rounded-[44px] filter blur-xl opacity-35 animate-pulse"></div>
+              <div class="relative w-full h-full rounded-[44px] overflow-hidden border border-neutral-800 p-1 bg-[#0c100c]">
+                <img id="mobile-core-icon" src="" alt="App Icon Logo" class="w-full h-full object-cover rounded-[38px]" referrerpolicy="no-referrer" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- LIVE CAMPAIGN DATA PULSES AND SPURTS -->
+        <div class="max-w-2xl mx-auto mb-16 select-none">
+          <div class="grid grid-cols-2 gap-4 w-full">
+            
+            <!-- Live Active Online counts -->
+            <div class="flex items-center gap-3.5 p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/10 backdrop-blur-md">
+              <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-500/20 text-emerald-400">
+                <i class="fas fa-wifi text-lg animate-pulse"></i>
+                <span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 border border-neutral-950 animate-ping"></span>
+              </div>
+              <div class="text-left">
+                <div class="text-[10px] font-bold text-emerald-500 font-mono flex items-center gap-1.5 uppercase tracking-wider">
+                  Live Sasa
+                </div>
+                <div class="text-lg font-bold text-neutral-100 font-mono leading-none mt-0.5">
+                  <span id="metric-live-users">142</span> <span class="text-xs font-medium text-neutral-400 font-sans">mtandaoni</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Installs Today counter -->
+            <div class="flex items-center gap-3.5 p-4 rounded-2xl bg-neutral-900/40 border border-neutral-850 backdrop-blur-md">
+              <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-400">
+                <i class="fas fa-download text-lg animate-bounce"></i>
+              </div>
+              <div class="text-left">
+                <div class="text-[10px] font-bold text-orange-400 font-mono uppercase tracking-wider">
+                  Sakinisho Leo
+                </div>
+                <div class="text-lg font-bold text-neutral-100 font-mono leading-none mt-0.5">
+                  <span id="metric-today-installs">542,015</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- VIPENGELE BENTO CARD MATRIX -->
+        <section id="features-grid-anchor" class="mb-20 scroll-mt-24">
+          <div class="text-center mb-12 select-none">
+            <span class="text-[11px] font-mono text-emerald-500 uppercase tracking-[0.3em] mb-4">Sifa Kuu za Programu</span>
+            <h2 class="font-sans font-black italic uppercase mt-3 tracking-tighter text-4xl text-white">
+              Utendaji Usio na Mpinzani Simuni
+            </h2>
+            <p class="text-xs text-neutral-500 max-w-sm mx-auto mt-2 leading-relaxed">
+              Teknolojia yetu ya kisasa inakuhakikishia utiririshaji wa haraka na taarifa zenye usahihi wa kiwango cha juu.
+            </p>
+          </div>
+
+          <!-- Dynamic feature cards container -->
+          <div id="bento-matrix" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Injected dynamically via script -->
+          </div>
+        </section>
+
+        <!-- SCREENSHOT SLIDER CARDS -->
+        <section class="mb-20">
+          <div class="text-center mb-12 select-none">
+            <span class="text-[11px] font-mono text-emerald-500 uppercase tracking-[0.3em] mb-4">Screenshots za Ndani</span>
+            <h2 class="font-sans font-black italic uppercase mt-3 tracking-tighter text-4xl text-white">
+              Muonekano wa Ndani wa Programu
+            </h2>
+            <p class="text-xs text-neutral-500 max-w-sm mx-auto mt-2 leading-relaxed">
+              Utazamaji wenye kiolesura cha kisasa, rahisi na kisichochosha macho.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-neutral-900/30 p-8 rounded-3xl border border-neutral-900 select-none">
+            <div class="flex flex-col items-start text-left max-w-md h-full justify-center">
+              <span id="screenshot-step-tag" class="text-[11px] font-bold font-mono text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full mb-4">
+                Kadi ya 1 kati ya 4
+              </span>
+              <h3 id="screenshot-title-node" class="font-sans font-black text-2xl text-neutral-100 mb-2">⚽ NBC Premier League</h3>
+              <p class="text-xs text-neutral-400 leading-relaxed mb-6">
+                Chaguzi mbalimbali za kucheza, kuangalia weledi wa habari pindi soka likitokea, kila kitu kimeboreshwa kurahisisha utumiaji.
+              </p>
+
+              <!-- Gallery sliders buttons controllers -->
+              <div class="flex items-center gap-3">
+                <button onclick="prevScreenshot()" class="flex items-center justify-center w-11 h-11 rounded-lg border border-neutral-850 bg-neutral-900/40 text-neutral-400 hover:text-white hover:border-neutral-700 cursor-pointer transition-colors">
+                  <i class="fas fa-chevron-left text-sm"></i>
+                </button>
+                <button onclick="nextScreenshot()" class="flex items-center justify-center w-11 h-11 rounded-lg border border-neutral-850 bg-neutral-900/40 text-neutral-400 hover:text-white hover:border-neutral-700 cursor-pointer transition-colors">
+                  <i class="fas fa-chevron-right text-sm"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Virtual glass device placeholder -->
+            <div class="flex justify-center relative">
+              <div id="screenshot-glow-indicator" class="absolute inset-0 filter blur-2xl rounded-full z-0 w-48 h-48 m-auto opacity-10 pointer-events-none"></div>
+              
+              <div class="relative w-full max-w-[280px] h-[480px] rounded-[32px] overflow-hidden border border-neutral-800 shadow-2xl bg-neutral-900 p-[3px] z-10 transition-transform duration-300">
+                <!-- Camera Notch -->
+                <div class="absolute top-2.5 left-0 right-0 m-auto w-24 h-4 rounded-full bg-neutral-950 z-20 flex items-center justify-end px-3">
+                  <div class="w-1.5 h-1.5 rounded-full bg-blue-600/70 mr-1.5 animate-pulse"></div>
+                  <div class="w-1.5 h-1.5 rounded-full bg-neutral-800"></div>
+                </div>
+
+                <div class="w-full h-full rounded-[29px] overflow-hidden bg-neutral-950 relative">
+                  <img id="screenshot-image-view" src="" alt="App Screenshot Preview" class="w-full h-full object-cover transition-all" />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- HIGH CONVERTING TRUST CARD WITH WEB API SHARE -->
+        <section class="mb-20 select-none">
+          <div class="p-8 md:p-12 rounded-[32px] bg-neutral-900/30 border border-neutral-900 backdrop-blur-md relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10">
+            <div id="trust-bar-lime" class="absolute top-0 left-0 right-0 h-[2px]"></div>
+            
+            <div class="text-left">
+              <div class="flex items-center gap-1.5 text-amber-500 font-bold mb-3.5">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <h3 class="font-sans font-extrabold text-3xl text-neutral-100 tracking-tight">Kwanini Usakinishe Leo?</h3>
+              <p class="text-xs text-neutral-400 leading-relaxed max-w-md mt-2">
+                Programu zetu zote ni rafiki sana kwa matumizi ya data (bando), na zina weledi wa kipekee kwa upande wa Kasi na urahisi wa Kiingereza au Kiswahili.
+              </p>
+            </div>
+
+            <!-- Share block with Clipboard fallback state indicator inside -->
+            <div class="flex flex-col items-center">
+              <button onclick="shareLinkCampaign()" id="share-action-btn" class="relative inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold text-sm bg-blue-500/10 hover:bg-blue-500/25 border border-blue-500/40 hover:border-blue-400 text-blue-300 shadow-[0_0_15px_rgba(59,130,246,0.15)] transition-all transform active:scale-95 duration-200 cursor-pointer">
+                <i class="fas fa-share-nodes"></i>
+                <span>Alika Rafiki / Shiriki App</span>
+              </button>
+              
+              <!-- Micro Alert notification copy -->
+              <div id="copied-badge" class="transition-all duration-300 opacity-0 transform -translate-y-2 select-none h-4 text-[10px] text-emerald-400 font-semibold mt-2">
+                Kiungo kimenakiliwa kufunguliwa sasa!
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECURITY AND SPECIFICS INFORMATIONAL ROW -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 select-none bg-neutral-900/20 p-8 rounded-2xl border border-neutral-950">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 text-sm">
+              <i class="fas fa-award"></i>
+            </div>
+            <div class="text-left">
+              <p class="text-[10px] font-mono font-semibold uppercase tracking-widest text-neutral-500">Mchapishaji</p>
+              <p class="text-sm font-bold text-neutral-200 mt-0.5">Ghettodevelopers</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-orange-500/10 text-orange-400 flex items-center justify-center border border-orange-500/20 text-sm">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="text-left">
+              <p class="text-[10px] font-mono font-semibold uppercase tracking-widest text-neutral-500">Kipindi</p>
+              <p id="info-year-tag" class="text-sm font-bold text-neutral-200 mt-0.5">Tangu 2020</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20 text-sm">
+              <i class="fas fa-shield-halved"></i>
+            </div>
+            <div class="text-left">
+              <p class="text-[10px] font-mono font-semibold uppercase tracking-widest text-neutral-500">Usalama</p>
+              <p class="text-sm font-bold text-neutral-200 mt-0.5">Safi / Thibitishwa</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-fuchsia-500/10 text-fuchsia-400 flex items-center justify-center border border-fuchsia-500/20 text-sm">
+              <i class="fas fa-gem"></i>
+            </div>
+            <div class="text-left">
+              <p class="text-[10px] font-mono font-semibold uppercase tracking-widest text-neutral-500">Gharama</p>
+              <p class="text-sm font-bold text-neutral-200 mt-0.5">Bure 100%</p>
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- Bottom footer block -->
+      <footer class="border-t border-neutral-900 mt-20 pt-10 text-center text-neutral-500 text-xs">
+        <p class="font-bold tracking-widest uppercase mb-4 text-[#22c55e]">Ghettodevelopers</p>
+        <p id="footer-text-copyright" class="max-w-md mx-auto leading-relaxed px-6">
+          &copy; 2026 EaMax Swahili & SupaSoka. Haki zote zimehifadhiwa. Alama za biashara zote ni miliki ya wenyewe. Programu hii haina matangazo hatarishi.
+        </p>
+        <p class="mt-2 text-[10px] font-mono text-neutral-600">
+          Android na Google Play ni alama za Google LLC.
+        </p>
+      </footer>
+    </div>
+
+  </div>
+
+  <!-- CENTRALIZED CONFIG & VANILLA JS ENGINE RUNNING COMPATIBLY ON STATIC SERVERS -->
+  <script type="text/javascript">
+    // 1. APP CONFIGURATION DATA CORE
+    const appsConfig = {
+      eamax: {
+        id: 'eamax',
+        name: 'EaMax Swahili',
+        shortName: 'EaMax Swahili',
+        playStoreId: 'com.eamax',
+        playStoreUrl: 'https://play.google.com/store/apps/details?id=com.eamax',
+        iconUrl: 'https://i.postimg.cc/65Hxb7km/Picsart-26-03-04-11-55-05-912.jpg',
+        description: 'Furahia NBC Premier League, CAF Champions League, Tamthilia kali na Ligi mbalimbali duniani popote ulipo, live na bure kabisa.',
+        badge: 'Ipo Live na Bure kabisa 📺',
+        heroHtml: 'EA<span class="text-[#22c55e]">MAX</span><br><span class="text-[#f59e0b]">SWAHILI</span>',
+        primaryColor: '#16a34a', // Emerald/green style
+        accentColor: '#22c55e',
+        glowColor: 'rgba(34, 197, 94, 0.4)',
+        metaTitle: 'EaMax Swahili - Mechi za NBC, Ligi za Dunia & Tamthilia',
+        metaDesc: 'Download EaMax Swahili kutoka Play Store. Furahia NBC Premier League, CAF, Tamthilia kali na mechi live bure kabisa!',
+        metaImage: 'https://ds.aztv.videoready.tv/util/1772067544082-SIMBASCVSYANGASC-posterImage.png',
+        redirectText: 'Inakuelekeza EaMax Swahili...',
+        redirectSub: 'Tafadhali subiri kidogo, tunakupeleka Google Play Store iti uweze ku-install app kwa usalama.',
+        features: [
+          { icon: 'fa-tv', title: 'NBC Premier League Live', desc: 'Tazama mechi zote za ligi kuu ya Tanzania Bara tangu kipenga cha kwanza hadi mwisho.' },
+          { icon: 'fa-trophy', title: 'Michuano ya CAF', desc: 'Fuatilia klabu bora zaidi za Afrika (Champions League na Confederation Cup) kwa lugha ya Kiswahili.' },
+          { icon: 'fa-film', title: 'Tamthilia kali', desc: 'Burudika na tamthilia kali zaidi za ndani na nje ya nchi zilizotafsiriwa kwa weledi.' },
+          { icon: 'fa-globe', title: 'Ligi Kuu za Ulaya', desc: 'Pata habari na updates za matukio yote kutoka EPL, La Liga, Serie A na Bundesliga.' },
+          { icon: 'fa-download', title: 'Pakua na Utumie Bure', desc: 'Hakuna malipo ya siri. Sakinisha sasa kutoka Play Store na uanze kufurahia mara moja.' },
+          { icon: 'fa-bolt', title: 'Lugha ya Kiswahili', desc: 'Imeboreshwa maalum kwa lugha rahisi na adhimu ya Kiswahili kwa urahisi wa matumizi.' }
+        ],
+        screenshots: [
+          { img: 'https://ds.aztv.videoready.tv/util/1772067544082-SIMBASCVSYANGASC-posterImage.png', label: '⚽ NBC Premier League' },
+          { img: 'https://i.postimg.cc/rmSn6dqb/20250227-011554.png', label: '🏆 Mechi za ulaya' },
+          { img: 'https://i.postimg.cc/15HSXSNg/1757523390386-THUMBNAIL-OTTOMANAZAMTWO.webp', label: '🎬 Tamthilia kali' },
+          { img: 'https://i.postimg.cc/3NJR4dFQ/Screenshot-20260206-194819-Instagram.jpg', label: '🌍 Filamu & Tamthilia' }
+        ],
+        stats: {
+          usersCount: '500K+',
+          rating: '4.5',
+          yearStarted: '2020'
+        }
+      },
+      supasoka: {
+        id: 'supasoka',
+        name: 'SupaSoka',
+        shortName: 'SupaSoka',
+        playStoreId: 'com.ayubu.supasoka',
+        playStoreUrl: 'https://play.google.com/store/apps/details?id=com.ayubu.supasoka',
+        iconUrl: 'https://i.postimg.cc/rmSn6dqb/20250227-011554.png',
+        description: 'Pata matokeo ya soka ya papo hapo (live scores), habari za michezo ya soka, na msimamo wa ligi kuu zote kubwa duniani haraka kabisa.',
+        badge: '⚡ Kasi ya Soka Barani Afrika',
+        heroHtml: 'SUPA<span class="text-[#00ff88]">SOKA</span><br><span class="text-[#00f0ff]">LIVE SCORES</span>',
+        primaryColor: '#10b981', // Neon style
+        accentColor: '#00ff88',
+        glowColor: 'rgba(0, 255, 136, 0.45)',
+        metaTitle: 'SupaSoka - Matokeo ya Moja kwa Moja, Habari & Video Highlights',
+        metaDesc: 'Download SupaSoka sasa. Pata matokeo ya soka ya papo hapo, habari za michezo ya soka, na video za mabao kwa haraka kabisa.',
+        metaImage: 'https://i.postimg.cc/rmSn6dqb/20250227-011554.png',
+        redirectText: 'Inakuelekeza SupaSoka...',
+        redirectSub: 'Kasi zaidi! Tunakuunganisha na Google Play Store ili uweze kushusha SupaSoka sekunde chache zijazo.',
+        features: [
+          { icon: 'fa-futbol', title: 'Matokeo Moja kwa Moja', desc: 'Arifa na matokeo ya papo hapo ya mechi zote kubwa za soka duniani kote.' },
+          { icon: 'fa-newspaper', title: 'Habari za Michezo', desc: 'Uchambuzi wa kina na habari za moto kila saa kuhusu wachezaji na vilabu unavyopenda.' },
+          { icon: 'fa-video', title: 'Video za Mabao', desc: 'Tazama marudio ya mabao na highlights za mechi pindi tu zinapomalizika au zikiendelea.' },
+          { icon: 'fa-fire', title: 'Ligi Kuu Zote kubwa', desc: 'Fuatilia EPL, La Liga, Serie A, Champions League, na ligi zote za ndani bila kukosa.' },
+          { icon: 'fa-bell', title: 'Arifa za Magoli', desc: 'Hautapitwa na kitu. Alama na matokeo yanatumwa moja kwa moja kwenye simu yako kwa haraka.' },
+          { icon: 'fa-chart-line', title: 'Msimamo & Ratiba', desc: 'Msimamo wa sasa hivi wa pointi pamoja na ratiba zote zijazo za mechi kiganjani kwako.' }
+        ],
+        screenshots: [
+          { img: 'https://i.postimg.cc/rmSn6dqb/20250227-011554.png', label: '⚡ Live Matokeo' },
+          { img: 'https://ds.aztv.videoready.tv/util/1772067544082-SIMBASCVSYANGASC-posterImage.png', label: '📊 Viwango vya Ligi' },
+          { img: 'https://i.postimg.cc/15HSXSNg/1757523390386-THUMBNAIL-OTTOMANAZAMTWO.webp', label: '🎥 Video Highlights' },
+          { img: 'https://i.postimg.cc/3NJR4dFQ/Screenshot-20260206-194819-Instagram.jpg', label: '📱 Habari za Soka la Ulaya' }
+        ],
+        stats: {
+          usersCount: '200K+',
+          rating: '4.7',
+          yearStarted: '2024'
+        }
+      }
+    };
+
+    // 2. STATE MANAGER VARIABLES
+    let activeAppKey = null;
+    let activeScreenshotIdx = 0;
+    let liveUsersNum = 142;
+    let installsTodayNum = 542015;
+    let progressTimer = null;
+    let metricTimer = null;
+
+    // ─── INIT ROUTING FUNCTION ───
+    function initAppRouter() {
+      // Handle URL pathnames (e.g. /eamax) or query parameters (e.g. ?app=eamax)
+      const params = new URLSearchParams(window.location.search);
+      let appParam = params.get('app')?.toLowerCase().trim() || '';
+      
+      // Fallback pathname matching for standalone static deployments
+      const path = window.location.pathname.toLowerCase();
+      if (!appParam) {
+        if (path.includes('eamax')) appParam = 'eamax';
+        else if (path.includes('supasoka')) appParam = 'supasoka';
+      }
+
+      // Detect OS
+      const ua = navigator.userAgent.toLowerCase();
+      const isAndroid = /android/i.test(ua);
+      const isIOS = /iphone|ipad|ipod/i.test(ua);
+
+      if (isIOS) {
+        document.getElementById('ios-checker').classList.remove('hidden');
+      }
+
+      if (appParam && appsConfig[appParam]) {
+        activeAppKey = appParam;
+        
+        // Smart routing strategy:
+        // Android clients get redirected instantly via the redirection overlay
+        // iOS or Desktop clients get directed straight to the Landing view
+        if (isAndroid) {
+          launchInstantRedirect(appsConfig[activeAppKey]);
+        } else {
+          showAppLandingView(appsConfig[activeAppKey]);
+        }
+      } else {
+        // Default to Selectors view
+        showSelectorView();
+      }
+    }
+
+    // ─── INSTANT REDIRECT ENGINE ───
+    function launchInstantRedirect(app) {
+      document.getElementById('redirect-screen').classList.remove('hidden');
+      document.getElementById('selection-screen').classList.add('hidden');
+      document.getElementById('landing-screen').classList.add('hidden');
+
+      // Populate branding values dynamically
+      document.getElementById('redirect-app-title').innerHTML = app.shortName === 'EaMax Swahili' 
+        ? 'Ea<span class="text-emerald-500">Max</span> Swahili' 
+        : 'Supa<span class="text-emerald-400">Soka</span>';
+      
+      document.getElementById('redirect-app-icon').src = app.iconUrl;
+      document.getElementById('redirect-progress-bar').style.backgroundColor = app.accentColor;
+      
+      // Setup Custom Dynamic Backlights
+      document.getElementById('redirect-bg-glow').style.background = `radial-gradient(circle, ${app.accentColor} 0%, transparent 70%)`;
+      document.getElementById('redirect-pulse-glow').style.backgroundColor = app.accentColor;
+      
+      // Setup Action Button Styling
+      const manualBtn = document.getElementById('manual-redirect-btn');
+      manualBtn.style.background = `linear-gradient(135deg, ${app.primaryColor}, ${app.accentColor})`;
+      manualBtn.style.boxShadow = `0 8px 18px -6px ${app.accentColor}`;
+      manualBtn.onclick = () => performDirectIntentsRedirect(app);
+
+      // Perform loading animation
+      let progress = 0;
+      clearInterval(progressTimer);
+      
+      progressTimer = setInterval(() => {
+        progress += 4;
+        if (progress > 100) progress = 100;
+        
+        document.getElementById('redirect-status-percent').textContent = `${progress}%`;
+        document.getElementById('redirect-progress-bar').style.width = `${progress}%`;
+
+        // Update indicators
+        const descNode = document.getElementById('redirect-status-desc');
+        if (progress < 30) {
+          descNode.textContent = 'Inatengeneza muunganisho salama...';
+        } else if (progress < 65) {
+          descNode.textContent = 'Inafungua Play Store kwenye simu...';
+        } else if (progress < 90) {
+          descNode.textContent = 'Ukaribisho unakamilika...';
+        } else {
+          descNode.textContent = 'Inafungua sasa hivi!';
+        }
+
+        if (progress === 100) {
+          clearInterval(progressTimer);
+          performDirectIntentsRedirect(app);
+        }
+      }, 55);
+    }
+
+    // Intent scheme triggers market client explicitly bypassing Chrome sandbox block overlays
+    function performDirectIntentsRedirect(app) {
+      const isAndroid = /android/i.test(navigator.userAgent);
+      if (isAndroid) {
+        const intentUrl = `intent://details?id=${app.playStoreId}#Intent;scheme=market;package=${app.playStoreId};end;`;
+        window.location.href = intentUrl;
+        
+        // Fallback for secure browser pages
+        setTimeout(() => {
+          window.location.href = app.playStoreUrl;
+        }, 600);
+      } else {
+        window.location.href = app.playStoreUrl;
+      }
+    }
+
+    // ─── SHOWCASE VIEW LOGIC ───
+    function showAppLandingView(app) {
+      document.getElementById('redirect-screen').classList.add('hidden');
+      document.getElementById('selection-screen').classList.add('hidden');
+      document.getElementById('landing-screen').classList.remove('hidden');
+
+      activeAppKey = app.id;
+      activeScreenshotIdx = 0;
+
+      // Update Tab titles dynamically
+      document.title = app.metaTitle;
+
+      // Update Navigation elements
+      document.getElementById('nav-brand-title').innerHTML = app.shortName === 'EaMax Swahili' 
+        ? 'Ea<span class="text-emerald-500">Max</span>' 
+        : 'Supa<span class="text-emerald-400">Soka</span>';
+
+      // Update Slogan & Core copy details
+      document.getElementById('landing-badge-text').textContent = app.badge;
+      document.getElementById('landing-hero-html').innerHTML = app.heroHtml;
+      document.getElementById('landing-description-text').textContent = app.description;
+
+      // Action Button setup
+      const primaryBtn = document.getElementById('primary-action-btn');
+      primaryBtn.style.background = `linear-gradient(135deg, ${app.primaryColor}, ${app.accentColor})`;
+      primaryBtn.style.boxShadow = `0 10px 24px -6px ${app.accentColor}`;
+      
+      // Update Stats
+      document.getElementById('stat-download-tag').textContent = app.stats.usersCount;
+      document.getElementById('stat-rating-val').textContent = app.stats.rating;
+      document.getElementById('stat-year-val').textContent = app.stats.yearStarted;
+      document.getElementById('info-year-tag').textContent = `Tangu ${app.stats.yearStarted}`;
+
+      // Update App Icons on both desktop QR badge and mobile portals
+      document.getElementById('qr-logo-badge').src = app.iconUrl;
+      document.getElementById('mobile-core-icon').src = app.iconUrl;
+      
+      // Pulse background lighting styles
+      document.getElementById('mobile-icon-glow').style.backgroundColor = app.accentColor;
+      document.getElementById('scanner-line-light').style.background = `linear-gradient(to right, transparent, ${app.accentColor}, transparent)`;
+      document.getElementById('scanner-line-light').style.boxShadow = `0 0 8px 1px ${app.accentColor}`;
+      
+      // Add neon lights to brackets
+      const brackets = ['corner-bracket-tl', 'corner-bracket-tr', 'corner-bracket-bl', 'corner-bracket-br'];
+      brackets.forEach(id => {
+        document.getElementById(id).style.borderColor = app.accentColor;
+      });
+
+      // Ambient radial lighting colors
+      document.getElementById('landing-orb-1').style.background = `radial-gradient(circle, ${app.accentColor} 0%, transparent 70%)`;
+      document.getElementById('landing-orb-2').style.background = `radial-gradient(circle, ${app.primaryColor} 0%, transparent 70%)`;
+      
+      document.getElementById('trust-bar-lime').style.background = `linear-gradient(to right, ${app.primaryColor}, ${app.accentColor}, ${app.primaryColor})`;
+
+      // Dynamic QR Laser scanner infinite floating loop
+      let scannerTop = 10;
+      let scannerDir = 1;
+      const scanInterval = setInterval(() => {
+        const line = document.getElementById('scanner-line-light');
+        if (!line) {
+          clearInterval(scanInterval);
+          return;
+        }
+        scannerTop += scannerDir * 2;
+        if (scannerTop >= 90 || scannerTop <= 10) {
+          scannerDir *= -1;
+        }
+        line.style.top = `${scannerTop}%`;
+      }, 50);
+
+      // Render Bento Features Columns
+      const bentoNode = document.getElementById('bento-matrix');
+      bentoNode.innerHTML = app.features.map((feature, idx) => `
+        <div class="fade-reveal visible group relative p-6 rounded-2xl bg-neutral-900/35 border border-neutral-850 hover:border-neutral-700/60 transition-all duration-300 flex flex-col items-start gap-4">
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 rounded-2xl pointer-events-none transition-opacity duration-300 filter blur-lg" style="background: radial-gradient(150px at top left, ${app.accentColor}0a, transparent 70%);"></div>
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center border transition-all duration-300" style="background-color: ${app.primaryColor}0d; border-color: ${app.primaryColor}26;">
+            <i class="fas ${feature.icon} text-emerald-400 text-lg"></i>
+          </div>
+          <div class="text-left">
+            <h4 class="font-sans font-bold text-lg text-neutral-100 group-hover:text-white transition-colors">${feature.title}</h4>
+            <p class="text-xs leading-relaxed text-neutral-400 mt-1.5 font-sans">${feature.desc}</p>
+          </div>
+        </div>
+      `).join('');
+
+      // Refresh Screenshot sliders index
+      updateScreenshotGallery();
+    }
+
+    // ─── SELECTOR SCREEN ENGINE ───
+    function showSelectorView() {
+      document.title = 'Chagua Programu - EaMax Swahili & SupaSoka';
+      document.getElementById('redirect-screen').classList.add('hidden');
+      document.getElementById('selection-screen').classList.remove('hidden');
+      document.getElementById('landing-screen').classList.add('hidden');
+    }
+
+    // ─── SCREENSHOT GALLERY SLIDER ENGINE ───
+    function updateScreenshotGallery() {
+      const app = appsConfig[activeAppKey];
+      if (!app) return;
+
+      const screen = app.screenshots[activeScreenshotIdx];
+      
+      // Step tag
+      document.getElementById('screenshot-step-tag').textContent = `Kadi ya ${activeScreenshotIdx + 1} kati ya ${app.screenshots.length}`;
+      // Title Label
+      document.getElementById('screenshot-title-node').textContent = screen.label;
+      // Image source
+      const imgNode = document.getElementById('screenshot-image-view');
+      imgNode.style.opacity = 0;
+      
+      setTimeout(() => {
+        imgNode.src = screen.img;
+        imgNode.onload = () => { imgNode.style.opacity = 1; };
+        // Fallback style if asset breaks
+        imgNode.onerror = () => { imgNode.src = "https://i.postimg.cc/rmSn6dqb/20250227-011554.png"; };
+      }, 150);
+
+      // Light backdrop glowing syncs
+      document.getElementById('screenshot-glow-indicator').style.backgroundColor = app.accentColor;
+    }
+
+    function nextScreenshot() {
+      const app = appsConfig[activeAppKey];
+      if (!app) return;
+      activeScreenshotIdx = (activeScreenshotIdx === app.screenshots.length - 1) ? 0 : activeScreenshotIdx + 1;
+      updateScreenshotGallery();
+    }
+
+    function prevScreenshot() {
+      const app = appsConfig[activeAppKey];
+      if (!app) return;
+      activeScreenshotIdx = (activeScreenshotIdx === 0) ? app.screenshots.length - 1 : activeScreenshotIdx - 1;
+      updateScreenshotGallery();
+    }
+
+    // ─── TRIGGER EXPLICIT ACTION DIRECT DOWNLOADS ───
+    function triggerAppRedirect() {
+      if (activeAppKey && appsConfig[activeAppKey]) {
+        launchInstantRedirect(appsConfig[activeAppKey]);
+      }
+    }
+
+    // ─── NAVIGATION UTILITIES ───
+    function selectApp(key) {
+      if (appsConfig[key]) {
+        showAppLandingView(appsConfig[key]);
+      }
+    }
+
+    function goBackToSelect() {
+      showSelectorView();
+      // Reset search params cleanly
+      window.history.pushState({}, '', window.location.pathname);
+    }
+
+    // Disregard IOS notice banner securely
+    function dismissIosBanner() {
+      document.getElementById('ios-checker').classList.add('hidden');
+    }
+
+    // Smooth navigation jumps
+    function scrollToSegment(id) {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ─── WEB SHARING CAPABILITY OR CLIPBOARD COPY FALLBACK ───
+    async function shareLinkCampaign() {
+      const app = appsConfig[activeAppKey] || appsConfig.eamax;
+      const shareUrl = `${window.location.origin}${window.location.pathname}?app=${app.id}`;
+      const data = {
+        title: app.metaTitle,
+        text: `Nikupatie: ${app.metaDesc}`,
+        url: shareUrl
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(data);
+        } catch (e) {
+          console.warn('Share rejected or failed', e);
+        }
+      } else {
+        // Fallback Copy to Clipboard
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          const badge = document.getElementById('copied-badge');
+          badge.classList.remove('opacity-0', '-translate-y-2');
+          badge.classList.add('opacity-100', 'translate-y-0');
+          setTimeout(() => {
+            badge.classList.add('opacity-0', '-translate-y-2');
+            badge.classList.remove('opacity-100', 'translate-y-0');
+          }, 3000);
+        } catch (err) {
+          console.error('Clipboard copy lock issue:', err);
+        }
+      }
+    }
+
+    // ─── ACTIVE METRIC COUNTERS SIMULATION ───
+    function initActiveMetricCounters() {
+      // Dynamic live user counts changing randomly
+      setInterval(() => {
+        const change = Math.floor(Math.random() * 9) - 4;
+        liveUsersNum = Math.max(90, Math.min(240, liveUsersNum + change));
+        
+        const node = document.getElementById('metric-live-users');
+        if (node) node.textContent = liveUsersNum;
+      }, 3500);
+
+      // Increment today downloads count slowly mimicking active installation trends
+      setInterval(() => {
+        installsTodayNum += Math.floor(Math.random() * 3) + 1;
+        
+        const node = document.getElementById('metric-today-installs');
+        if (node) {
+          node.textContent = installsTodayNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+      }, 4000);
+    }
+
+    // 4. ON WINDOW LOAD RUN ENTRY
+    window.addEventListener('DOMContentLoaded', () => {
+      initAppRouter();
+      initActiveMetricCounters();
+    });
+  </script>
 </body>
 </html>
